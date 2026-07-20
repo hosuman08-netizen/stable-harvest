@@ -47,7 +47,7 @@
     var now = new Date(), mid = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
     var rem = Math.max(0, Math.floor((mid - now) / 60000));
     var clock = Math.floor(rem / 60) + 'h ' + (rem % 60) + 'm';
-    el.textContent = '🔥 ' + c + 'd sim streak · reset ' + clock + (c >= 3 && ready ? ' · 🛡️' : '') + ' · fictional only';
+    el.textContent = '🔥 ' + c + 'd sim streak · reset ' + clock + (c >= 3 && ready ? ' · 🛡️' : '') + ' · claim ' + claims + ' · fictional only';
   }
   function feeOf(amt, route) {
     var r = { fast: 0.025, eco: 0.008, night: 0.004 }[route] || 0.01;
