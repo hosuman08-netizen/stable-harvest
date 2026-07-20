@@ -84,7 +84,7 @@
     var route = document.getElementById('route').value;
     var fee = feeOf(amt, route);
     var recv = Math.max(0, amt - fee);
-    document.getElementById('fee').innerHTML =
+    document.getElementById('fee').innerHTML = (route==='eco'?'Eco 추천 · ':'')+
       '예상 수수료: <b style="color:#67e8f9">' + fee + '</b> · 수취: <b>' + recv + '</b> · 경로 ' + route;
     try { legionTrack('activate', { fee: fee, route: route }); } catch (e) {}
     return { amt: amt, fee: fee, recv: recv, route: route };
