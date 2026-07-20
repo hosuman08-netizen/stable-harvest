@@ -39,6 +39,12 @@
     save();
     render();
     try { legionTrack('money_pipe_shown', { sim: 1 }); } catch (e) {}
+    if(!document.getElementById('shareLast')){
+      var b=document.createElement('button'); b.id='shareLast'; b.className='sec'; b.textContent='영수증 문구 복사(가상)';
+      b.onclick=function(){var text='StableHarvest sim fee receipt · bal '+bal+' · https://hosuman08-netizen.github.io/stable-harvest/';
+        if(navigator.clipboard)navigator.clipboard.writeText(text);};
+      document.querySelector('.card:last-of-type')&&document.getElementById('log').appendChild(b);
+    }
   };
   try { legionTrack('session_start', {}); } catch (e) {}
   preview();
