@@ -55,6 +55,18 @@
       return hist.filter(function (h) { return (h.ts || 0) >= cut; }).reduce(function (a, h) { return a + (+h.fee || 0); }, 0);
     } catch (e) { return 0; }
   }
+  function todayFee() {
+    try {
+      var t0 = new Date(); t0.setHours(0,0,0,0);
+      return hist.filter(function (h) { return (h.ts || 0) >= t0.getTime(); }).reduce(function (a, h) { return a + (+h.fee || 0); }, 0);
+    } catch (e) { return 0; }
+  }
+  function todaySends() {
+    try {
+      var t0 = new Date(); t0.setHours(0,0,0,0);
+      return hist.filter(function (h) { return (h.ts || 0) >= t0.getTime(); }).length;
+    } catch (e) { return 0; }
+  }
   function dailyClaim() {
     var k = 'sh_daily_claim_' + dayKey(0);
     if (localStorage.getItem(k)) { alert('오늘 일일 가상 리필 완료'); return; }
@@ -111,9 +123,21 @@
       return '<div style="padding:6px 0;border-bottom:1px solid #2a2438;font-size:13px">' + h.t + ' · -' + h.amt + ' (fee ' + h.fee + ')</div>';
     }).join('') || '<div class="empty-cta" style="color:#8a8398;font-size:13px;padding:8px 0">기록 없음 — 첫 가상 송금으로 시작<br><button type="button" class="sec" id="emptySendCta" style="margin-top:8px">금액 입력 후 보내기</button></div>';
     var wf = Math.round(weekFee() * 100) / 100;
-    document.getElementById('log').innerHTML = '<b>최근 가상 송금</b> ('+hist.length+'건 · 7일 fee '+wf+')' + list;
+    var tf = Math.round(todayFee() * 100) / 100;
+    var ts = todaySends();
+    document.getElementById('log').innerHTML = '<b>최근 가상 송금</b> ('+hist.length+'건 · 오늘 '+ts+'회 fee '+tf+' · 7일 fee '+wf+')'
+      + (hist.length ? '<button type="button" class="sec" id="undoLast" style="margin:6px 0;padding:6px 10px;font-size:12px">↩ 직전 취소</button>' : '')
+      + list;
     var emptyBtn = document.getElementById('emptySendCta');
     if (emptyBtn) emptyBtn.onclick = function () { var a = document.getElementById('amt'); if (a) { a.focus(); a.value = a.value || '10'; preview(); } };
+    var ub = document.getElementById('undoLast');
+    if (ub) ub.onclick = function () {
+      if (!hist.length) return;
+      var last = hist.pop();
+      bal = Math.round((bal + (+last.amt || 0)) * 100) / 100;
+      save(); render(); renderStreak();
+      try { legionTrack('undo', {}); } catch (e) {}
+    };
   }
   function preview() {
     var amt = +document.getElementById('amt').value || 0;
