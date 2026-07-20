@@ -1,6 +1,8 @@
 (function () {
   var bal = +(localStorage.getItem('sh_bal') || 1234.56);
+  var claims = +(localStorage.getItem('sh_claims') || 0);
   var hist = JSON.parse(localStorage.getItem('sh_hist') || '[]');
+  function claimBump(){claims++; localStorage.setItem('sh_claims',claims);}
   function save() {
     localStorage.setItem('sh_bal', bal);
     localStorage.setItem('sh_hist', JSON.stringify(hist.slice(0, 30)));
