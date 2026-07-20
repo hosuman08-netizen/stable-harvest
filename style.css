@@ -1,0 +1,13 @@
+body { font-family: system-ui; background: #0a0806; color: #f5f1e6; margin:0; padding:20px; }
+.container { max-width: 480px; margin: 0 auto; }
+header { text-align: center; margin-bottom: 20px; }
+.disclaimer { font-size: 10px; opacity: 0.5; }
+h1 { color: #c5a46e; }
+.balance { font-size: 18px; margin: 10px 0; }
+.send-form, .history { background: #12100d; padding: 15px; border-radius: 12px; margin-bottom: 15px; }
+input, select { width: 100%; padding: 8px; margin: 5px 0; background: #1a1712; color: #f5f1e6; border: 1px solid #3a3124; border-radius: 6px; }
+button { padding: 10px; margin: 5px 0; background: #3a3124; color: #c5a46e; border: none; border-radius: 6px; width: 100%; cursor: pointer; }
+button.primary { background: #c5a46e; color: #0a0806; }
+.fee-preview { background: #1a1712; padding: 10px; border-radius: 6px; margin: 10px 0; }
+.history-item { border-bottom: 1px solid #3a3124; padding: 5px 0; font-size: 14px; }
+.cross { text-align: center; font-size: 12px; opacity: 0.6; }
