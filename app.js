@@ -75,7 +75,7 @@
     var list = hist.slice().reverse().slice(0, 8).map(function (h) {
       return '<div style="padding:6px 0;border-bottom:1px solid #2a2438;font-size:13px">' + h.t + ' · -' + h.amt + ' (fee ' + h.fee + ')</div>';
     }).join('') || '<div class="empty-cta" style="color:#8a8398;font-size:13px;padding:8px 0">기록 없음 — 첫 가상 송금으로 시작<br><button type="button" class="sec" id="emptySendCta" style="margin-top:8px">금액 입력 후 보내기</button></div>';
-    document.getElementById('log').innerHTML = '<b>최근 가상 송금</b>' + list;
+    document.getElementById('log').innerHTML = '<b>최근 가상 송금</b> ('+hist.length+'건)' + list;
     var emptyBtn = document.getElementById('emptySendCta');
     if (emptyBtn) emptyBtn.onclick = function () { var a = document.getElementById('amt'); if (a) { a.focus(); a.value = a.value || '10'; preview(); } };
   }
