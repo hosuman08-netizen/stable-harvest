@@ -55,6 +55,25 @@ try{var _dk=new Date().toDateString();var _o=JSON.parse(localStorage.getItem('lw
     var clock = Math.floor(rem / 60) + 'h ' + (rem % 60) + 'm';
     el.textContent = '🔥 ' + c + 'd sim streak · reset ' + clock + (c >= 3 && ready ? ' · 🛡️' : '') + ' · claim ' + claims + ' · fictional only';
   }
+  function renderShWeek(){
+    try{
+      var el=document.getElementById('shWeekSpark');
+      if(!el){
+        el=document.createElement('div'); el.id='shWeekSpark';
+        el.style.cssText='display:flex;align-items:flex-end;gap:3px;height:28px;margin:8px 0';
+        var log=document.getElementById('log'); if(log&&log.parentNode) log.parentNode.insertBefore(el, log);
+        else document.body.appendChild(el);
+      }
+      var vals=[],max=1;
+      for(var i=6;i>=0;i--){
+        var d=new Date(); d.setDate(d.getDate()-i); d.setHours(0,0,0,0);
+        var n0=d.getTime(), n1=n0+864e5;
+        var fee=hist.filter(function(h){return (h.ts||0)>=n0 && (h.ts||0)<n1;}).reduce(function(a,h){return a+(+h.fee||0);},0);
+        vals.push(fee); if(fee>max)max=fee;
+      }
+      el.innerHTML=vals.map(function(n){var h=Math.max(3,Math.round(n/max*24));return '<div style="flex:1;height:'+h+'px;background:'+(n>0?'#67e8f9':'#2a2438')+';border-radius:2px" title="fee '+n+'"></div>';}).join('');
+    }catch(e){}
+  }
   function weekFee() {
     try {
       var cut = Date.now() - 7 * 864e5;
@@ -168,6 +187,7 @@ try{var _dk=new Date().toDateString();var _o=JSON.parse(localStorage.getItem('lw
     save();
     render();
     bumpStreak();
+    renderShWeek();
     showMoneyPipe();
     try { legionTrack('money_pipe_shown', { sim: 1 }); } catch (e) {}
     if (!document.getElementById('shareLast')) {
@@ -194,6 +214,7 @@ try{var _dk=new Date().toDateString();var _o=JSON.parse(localStorage.getItem('lw
   preview();
   render();
   renderStreak();
+  renderShWeek();
   ensureDailyBtn();
 
 /* LEGION_WAVE_47_fomo_chip */
