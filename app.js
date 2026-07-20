@@ -1,3 +1,6 @@
+
+/* LEGION_WAVE_2_today_counter */
+try{var _dk=new Date().toDateString();var _o=JSON.parse(localStorage.getItem('lw_p10_stable_h_today_counter')||'{}');if(_o.d!==_dk)_o={d:_dk,n:0};_o.n=(_o.n||0)+1;localStorage.setItem('lw_p10_stable_h_today_counter',JSON.stringify(_o));}catch(e){}
 (function () {
   var bal = +(localStorage.getItem('sh_bal') || 1234.56);
   var claims = +(localStorage.getItem('sh_claims') || 0);
