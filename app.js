@@ -92,6 +92,22 @@ try{var _dk=new Date().toDateString();var _o=JSON.parse(localStorage.getItem('lw
       return hist.filter(function (h) { return (h.ts || 0) >= t0.getTime(); }).length;
     } catch (e) { return 0; }
   }
+  function monthFee() {
+    try {
+      var now = new Date();
+      var t0 = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+      return hist.filter(function (h) { return (h.ts || 0) >= t0; }).reduce(function (a, h) { return a + (+h.fee || 0); }, 0);
+    } catch (e) { return 0; }
+  }
+  function topRoute() {
+    try {
+      var m = {};
+      hist.forEach(function (h) { var r = h.route || 'eco'; m[r] = (m[r] || 0) + 1; });
+      var best = '', n = 0;
+      Object.keys(m).forEach(function (k) { if (m[k] > n) { n = m[k]; best = k; } });
+      return best ? best + '×' + n : '—';
+    } catch (e) { return '—'; }
+  }
   function dailyClaim() {
     var k = 'sh_daily_claim_' + dayKey(0);
     if (localStorage.getItem(k)) { alert('오늘 일일 가상 리필 완료'); return; }
@@ -149,8 +165,12 @@ try{var _dk=new Date().toDateString();var _o=JSON.parse(localStorage.getItem('lw
     }).join('') || '<div class="empty-cta" style="color:#8a8398;font-size:13px;padding:8px 0">기록 없음 — 첫 가상 송금으로 시작<br><button type="button" class="sec" id="emptySendCta" style="margin-top:8px">금액 입력 후 보내기</button></div>';
     var wf = Math.round(weekFee() * 100) / 100;
     var tf = Math.round(todayFee() * 100) / 100;
+    var mf = Math.round(monthFee() * 100) / 100;
     var ts = todaySends();
-    document.getElementById('log').innerHTML = '<b>최근 가상 송금</b> ('+hist.length+'건 · 오늘 '+ts+'회 fee '+tf+' · 7일 fee '+wf+')'
+    var goal = 3;
+    var gPct = Math.min(100, Math.round(ts / goal * 100));
+    document.getElementById('log').innerHTML = '<b>최근 가상 송금</b> ('+hist.length+'건 · 오늘 '+ts+'/'+goal+' · fee '+tf+' · 7일 '+wf+' · 월 '+mf+' · 경로 '+topRoute()+')'
+      + '<div style="height:6px;background:#1c1826;border-radius:4px;margin:8px 0;overflow:hidden" title="오늘 송금 목표 '+goal+'"><i style="display:block;height:100%;width:'+gPct+'%;background:linear-gradient(90deg,#67e8f9,#e0b552)"></i></div>'
       + (hist.length ? '<button type="button" class="sec" id="undoLast" style="margin:6px 0;padding:6px 10px;font-size:12px">↩ 직전 취소</button>' : '')
       + list;
     var emptyBtn = document.getElementById('emptySendCta');
